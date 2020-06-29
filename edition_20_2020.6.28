@@ -1,0 +1,1502 @@
+#include <iostream>
+#include<string>
+#include<iomanip>
+//#define NULL 0
+using namespace std;
+void Menu();
+//struction defination
+int order = 0; 
+struct Node {
+  int num;
+  string name;
+  int scoreMath;
+  int scoreEnglish;
+  int scorePhysics;
+  int scoreAll;
+  struct Node *next;
+} ;
+	
+Node *head = 0;
+bool warmFlag = 0;
+
+//输入链表上各节点的值 
+Node *create(Node *head,bool warmFlag)
+{
+	
+	system("cls");
+	int dataTemp; 
+	Node *p = 0,*pend = 0;
+	if(head != 0)
+	{
+		cout<<"该操作将会覆盖原有数据! 若要修改单个节点建议您使用2 3 4功能。\n";
+		cout<<"是否执行重新输入Y/N？： ";
+		char judge;
+		cin>>judge;
+		if(judge == 'Y' || judge == 'y')
+		{
+			head = 0;
+			system("cls");
+			cout<<"恭喜您，数据覆盖成功！请重新输入\n";
+		}
+		else return head;
+	}
+	cout<<"请输入学号1~30，回车确定（0表示结束输入）:";
+	cin>>dataTemp;
+	if(dataTemp == 0) return head;
+	while(dataTemp < 0 || dataTemp >30)
+	{
+		cout<<"学号错误！请检查后重新输入（0表示结束输入）：";
+		cin>>dataTemp;
+	}
+	while(dataTemp != 0)
+	{	
+		p=new Node; //creat new one
+		p->num = dataTemp;
+		cout<<"请用拼音和数字输入姓名:";
+		cin>>p->name;
+		cout<<"请输入数学分数:";
+		cin>>dataTemp;
+		while(dataTemp < 0 || dataTemp >100)
+    	{
+	    	cout<<"输入错误！请检查后重新输入数学：" ;
+    		cin>>dataTemp;
+    	}
+    	p->scoreMath = dataTemp; 
+		cout<<"请输入英语分数:";
+		cin>>dataTemp;
+		while(dataTemp < 0 || dataTemp >100)
+    	{
+	    	cout<<"输入错误！请检查后重新输入英语：" ;
+    		cin>>dataTemp;
+    	}
+		p->scoreEnglish = dataTemp; 
+		cout<<"请输入物理分数:";
+		cin>>dataTemp;
+		while(dataTemp < 0 || dataTemp >100)
+    	{
+	    	cout<<"输入错误！请检查后重新输入物理：" ;
+    		cin>>dataTemp;
+    	}
+		p->scorePhysics = dataTemp; 
+		p->scoreAll = p->scoreMath + p->scoreEnglish + p->scorePhysics;
+		cout<<"该同学总分为："<<p->scoreAll<<'\n'; 
+		system("pause");
+		system("cls");
+		if(head == 0)
+		{
+			head = p;
+			pend = p;
+		} 
+		else
+		{
+			pend->next = p;
+			pend = p;
+		}
+		cout<<"请输入学号，回车确定（0表示结束输入）:";
+		cin>>dataTemp; 
+		while(dataTemp < 0 || dataTemp >30)
+    	{
+	    	cout<<"输入错误！请检查后重新输入学号（0表示结束输入）：" ;
+    		cin>>dataTemp;
+    	}
+	} 
+	pend->next = NULL;
+	warmFlag = 1;
+	return head;
+}
+//输出链表上各节点的值 
+void print(Node *head)
+{	
+    //冒泡排序核心 
+    Node *p1,*p2,*p3,*p = head; 
+    int i;
+    if(head == 0)//空链表 
+    {
+    	cout<<"系统内没有数据，建议您使用功能1依次初始化录入：";	
+	}
+	else
+	{
+		for(i = 1;p->next !=0;i++)//cout node number
+        {
+        p = p->next;
+        }
+        if(i == 1)//只有1个数据
+        {
+        	p = head; 
+	        cout<<"根据学号排序阅览为：\n";  //print 
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<setw(6)<<"英语"<<setw(6)<<"物理"<<setw(6)<<"总分"<<'\n';	
+        	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<setw(6)<<p->scoreEnglish<<setw(6)<<p->scorePhysics<<setw(6)<<p->scoreAll<<'\n';
+		}
+		else if(i == 2)//只有2个数据
+		{
+			p = p1 = head ,p2 = p1->next;
+     		if(p1->num > p2->num)
+    		{
+     			head = p2;
+     			p2->next = p1;
+     			p1->next = 0;
+            } 
+            cout<<"根据学号排序阅览为：\n"; //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<setw(6)<<"英语"<<setw(6)<<"物理"<<setw(6)<<"总分"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<setw(6)<<p->scoreEnglish<<setw(6)<<p->scorePhysics<<setw(6)<<p->scoreAll<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}
+		else if( i== 3)//只有3个数据
+		{
+			p = p1 = head,p2 = head->next,p3 = p2->next;//3个if实现简单冒泡排序 
+     		if(p1->num > p2->num)
+    		{
+	    		head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;
+    		}
+   	    	if(p2->num > p3->num)
+	    	{
+	    		p1->next = p3;
+	    		p3->next = p2;
+	    		p2->next =0;
+	    		//结点交换后，p2与p3位置颠倒回来
+                Node *pTemp;
+                pTemp = p2;
+                p2 = p3;
+                p3 = pTemp;
+                p = head;
+	      	}
+	    	if(p1->num > p2->num)
+	    	{
+	    	    head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;   
+    		} 
+    		cout<<"根据学号排序阅览为：\n"; //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<setw(6)<<"英语"<<setw(6)<<"物理"<<setw(6)<<"总分"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<setw(6)<<p->scoreEnglish<<setw(6)<<p->scorePhysics<<setw(6)<<p->scoreAll<<'\n';
+                p = p->next;
+            }
+            p = head;
+ 		}
+ 		else//3个数据以上 
+ 		{
+ 			bool flag = 1,pFlag = 0,sortFlag = 0;
+            int temp,n;
+    	    p = p1 = head ,p2 = p1->next,p3=head; 
+    	    for(i = 0,p = head;p->next !=0;i++)//cout node number
+            {
+            	p = p->next;
+          	}
+            for(;i > 0;i--)
+            {
+            	p1 = head ;
+        		p2 = p1->next;
+        		p3=head;
+    	    	flag = 1;
+    	    	sortFlag = 0;//optimize
+            	do
+             	{
+            		if(p2->next == 0)
+    	    		{
+    	    			flag = 0;
+    	    		}
+        	    	if(p1 == head)//method begining
+                	{
+                		if(p1->num > p2->num)
+         	        	{
+        	        		Node *pTemp = p2; //copy
+    		        		p1->next = p2->next;
+	        	    		head = p2;
+		            	    p2 = pTemp;
+	        	        	p2->next = p1;
+	            		    //结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                        	p1 = p2;
+                        	p2 = pTemp2;
+                        	p = head;
+		            	}
+		            	p1 = p1->next;
+		        	    p2 = p2->next;
+		    	        if(p2->next == 0)//method ending
+	                	{
+		             	if(p1->next->num > p2->next->num)
+		                	{
+		                		Node *pTemp = p3;//copy
+		            	    	p3->next = p2;
+		            	    	p2->next = p1;
+	    	            		p1->next = 0;
+		    	            	//结点交换后，p1与p2位置颠倒回来
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                                p1 = p2;
+                                p2 = pTemp2;
+                                p3 = pTemp;  
+                            }   
+		            	}
+		            	else//method middle
+	                 	{
+	    	            	if(p1->num > p2->num)
+	    	            	{
+	    	            		Node *pTemp = p3;//copy
+	    	            		p3->next = p2;
+	    	                 	p1->next = p2->next ;
+	    	            		p2->next = p1;
+	    	            		//结点交换后，p1与p2位置颠倒回来,p3恢复
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                            	p1 = p2;
+                             	p2 = pTemp2;
+			            		p3 = pTemp;    			
+		        	    	}
+	                	}
+	                //p = head;
+	                p3 = head;
+	                }
+	            	else if(p2->next == 0)//method ending
+	            	{
+		            	if(p1->num > p2->num)
+		             	{
+		            		Node *pTemp = p3;//copy
+		            		p3->next = p2;
+		            		p2->next = p1;
+	            			p1->next = 0;
+		            		//结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+                            p3 = pTemp;    				
+		             	}
+	            	}
+	             	else//method middle
+	             	{
+	            		if(p1->num > p2->num)
+	            		{
+	            			Node *pTemp = p3;//copy
+	            	    	p3->next = p2;
+	            	    	p1->next = p2->next ;
+	            	    	p2->next = p1;
+	            			//结点交换后，p1与p2位置颠倒回来,p3恢复
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+	    	    	    	p3 = pTemp;     			
+	    	    		}
+	            	}
+	    	    	p1 = p1->next;
+	          		p2 = p2->next;	
+	     	    	p3 = p3->next;	
+	         	}while(flag);
+    	    	if(sortFlag) break;	
+            }
+            p = head;
+        	cout<<"根据学号排序阅览为：\n";  //print 
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<setw(6)<<"英语"<<setw(6)<<"物理"<<setw(6)<<"总分"<<'\n';	
+        	while(p != NULL)
+        	{
+        	    cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<setw(6)<<p->scoreEnglish<<setw(6)<<p->scorePhysics<<setw(6)<<p->scoreAll<<'\n';
+                p = p->next;
+            }
+		}
+		
+	}
+    cout<<"\n请直接输入操作指令："; 
+}
+//更改学生成绩 
+void replace(Node *head)
+{
+	
+	system("cls");
+	int stuID;
+    Node *p = head,*p1 = head;
+    cout<<"请输入想替换的学号：";
+    cin>>stuID;
+    if (head == NULL)
+    {   
+	    cout<<"\n链表为空，无学生数据可替换."<<endl; //空链表 
+    }
+    else if (p->num == stuID) //更改首链表 
+    {
+    	int dataTemp; 
+    	cout<<"该学生数据如下：\n"; 
+        cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<setw(6)<<"英语"<<setw(6)<<"物理"<<setw(6)<<"总分"<<'\n';	
+        cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<setw(6)<<p->scoreEnglish<<setw(6)<<p->scorePhysics<<setw(6)<<p->scoreAll<<'\n';
+     	cout<<"请用拼音和数字输入更改后的姓名:";
+		cin>>p->name; 
+	    cout<<"请输入该学生更改后的数学成绩：";
+    	cin>>dataTemp;
+    	while(dataTemp < 0 || dataTemp >100)
+        {
+    	    cout<<"输入错误！请检查后重新输入数学：" ;
+         	cin>>dataTemp;
+        }
+        p->scoreMath = dataTemp; 
+    	cout<<"请输入该学生更改后的英语成绩：";
+    	cin>>dataTemp;
+    	while(dataTemp < 0 || dataTemp >100)
+        {
+    	    cout<<"输入错误！请检查后重新输入英语：" ;
+         	cin>>dataTemp;
+        }
+        p->scoreEnglish = dataTemp; 
+    	cout<<"请输入该学生更改后的物理成绩：";
+    	cin>>dataTemp;
+    	while(dataTemp < 0 || dataTemp >100)
+        {
+    	    cout<<"输入错误！请检查后重新输入物理：" ;
+         	cin>>dataTemp;
+        }
+        p->scorePhysics = dataTemp; 
+    	p->scoreAll = p->scoreMath + p->scoreEnglish + p->scorePhysics;
+     	cout<<"该同学更改后的总分为："<<p->scoreAll<<'\n';  
+     	cout<<"\n恭喜您，更改成功！" ; 
+    }
+    else  //更改中间和尾部链表 
+    {   
+	    while(p->num != stuID && p->next != NULL)
+        {   
+		    p1 = p;        //保存前一个节点 
+            p = p->next;  //寻找下一个节点
+        }
+        if(p->num == stuID)
+        {
+        	cout<<"该学生数据如下：\n"; 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<setw(6)<<"英语"<<setw(6)<<"物理"<<setw(6)<<"总分"<<'\n';	
+            cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<setw(6)<<p->scoreEnglish<<setw(6)<<p->scorePhysics<<setw(6)<<p->scoreAll<<'\n';
+         	cout<<"请用拼音和数字输入更改后的姓名:";
+	    	cin>>p->name; 
+	        cout<<"请输入该学生更改后的数学成绩：";
+	        cin>>p->scoreMath;
+        	cout<<"请输入该学生更改后的英语成绩：";
+        	cin>>p->scoreEnglish;
+        	cout<<"请输入该学生更改后的数学成绩：";
+        	cin>>p->scorePhysics;
+        	p->scoreAll = p->scoreMath + p->scoreEnglish + p->scorePhysics;
+        	cout<<"该同学更改后的总分为："<<p->scoreAll<<'\n';
+        	cout<<"\n恭喜您，更改成功！" ; 
+		}
+        else
+		{
+		    cout<<"\n对不起，没有根据学号找到您想要更改的数据。"<<endl;
+		} 
+    }
+    system("pause"); 
+}
+//删除具有指定值链表的节点
+Node *delete_node(Node *head)
+{ 
+    system("cls");
+    int stuID;
+    cout<<"请输入想删除的学号：";
+    cin>>stuID;
+	while(stuID <= 0 || stuID >=30) //judge
+    {
+	    cout<<"输入错误！请检查后重新输入学号：" ;
+    	cin>>stuID;
+    }
+    if (head == NULL)
+    {   
+	    cout<<" 链表为空，无学生数据可删!\n"; //空链表 
+	    system("pause"); 
+	    return NULL; 
+    }
+    if (head->num == stuID) //删除首链表 
+    { 
+        Node *p5 = head;
+		head = head->next;
+        delete p5;
+        cout<<"\n恭喜您，该学生删除成功!"<<endl;
+    }
+    else  //删除中间链表 
+    {   
+        Node *p4 = head,*p5 = head;
+	    while(p5->num != stuID && p5->next != NULL)
+        {   
+		    p4 = p5;        //保存前一个节点 
+            p5 = p5->next;  //寻找下一个节点 
+        }
+        if(p5->num == stuID)
+        {
+        	p4->next = p5->next;
+            delete p5;
+            cout<<"\n恭喜您，该学生删除成功!"<<endl;
+		}
+        else
+		{
+		    cout<<"\n对不起，没有根据学号找到您想要删除的数据。"<<endl;
+		} 
+    }
+    system("pause"); 
+    return head;
+}
+ //插入链表的节点
+ Node *insert(Node *head)
+ {
+ 	int dataTemp;
+ 	system("cls");
+ 	Node *pInsert = new Node;
+ 	cout<<"请输入添加学生的学号：";
+ 	cin>>dataTemp;
+	while(dataTemp <= 0 || dataTemp >=30)
+    {
+	    cout<<"输入错误！请检查后重新输入学号：" ;
+    	cin>>dataTemp;
+    }
+    pInsert->num = dataTemp; 
+	cout<<"请用拼音输入姓名:";
+	cin>>pInsert->name; 
+	cout<<"请输入该学生的数学成绩：";
+	cin>>dataTemp;
+	while(dataTemp < 0 || dataTemp >100)
+    {
+	    cout<<"输入错误！请检查后重新输入数学：" ;
+    	cin>>dataTemp;
+    }
+    pInsert->scoreMath = dataTemp; 
+	cout<<"请输入该学生的英语成绩：";
+	cin>>dataTemp;
+	while(dataTemp < 0 || dataTemp >100)
+    {
+	    cout<<"输入错误！请检查后重新输入英语：" ;
+    	cin>>dataTemp;
+    }
+    pInsert->scoreEnglish = dataTemp; 
+	cout<<"请输入该学生的数学成绩：";
+	cin>>dataTemp;
+	while(dataTemp < 0 || dataTemp >100)
+    {
+	    cout<<"输入错误！请检查后重新输入数学：" ;
+    	cin>>dataTemp;
+    }
+    pInsert->scorePhysics = dataTemp; 
+	pInsert->scoreAll = pInsert->scoreMath + pInsert->scoreEnglish + pInsert->scorePhysics;
+ 	cout<<"该同学总分为："<<pInsert->scoreAll<<'\n'; 
+	Node *p1 = 0,*p2 = 0;
+ 	if(head == 0) //empty
+    {
+ 		head = pInsert;
+ 		pInsert->next = 0;
+ 		return head;
+    }
+	if(head->num >= pInsert->num) //begining
+	{
+	 	pInsert->next = head;
+	 	head = pInsert;
+	 	return head;
+	}
+	p1 = p2 = head;
+	while(p2->next != 0 && p2->num < pInsert->num) //locating
+	{
+	 	p1 = p2;
+	 	p2 = p2->next;
+	}
+	if(p2->num < pInsert->num) //ending
+	{
+	 	p2->next = pInsert;
+	 	pInsert->next = 0;
+	}
+	else
+	{
+	 	pInsert->next = p2; //middle
+	 	p1->next = pInsert;
+	}
+	cout<<"学号插入成功！；"; 
+	system("pause");
+	return head;
+ }
+ //链表中查询学号
+ void search(Node *head) 
+ { 
+    system("cls");
+    int stuID;
+    cout<<"请输入想查找的学号：";
+    cin>>stuID;
+    Node *p,*p1;
+    p = p1 = head;
+    if (head == NULL)
+    {   
+	    cout<<" 链表为空，查询无效"<<endl; //空链表 
+    }
+    else if (p->num == stuID)   //查询头链表 
+    {
+        {
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<setw(6)<<"英语"<<setw(6)<<"物理"<<setw(6)<<"总分"<<'\n';	
+            cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<setw(6)<<p->scoreEnglish<<setw(6)<<p->scorePhysics<<setw(6)<<p->scoreAll<<'\n';
+        }
+    }
+    else  //查询中间链表 
+    {   
+	    while(p->num != stuID && p->next != NULL)
+        {   
+		    p1 = p;        //copy
+            p = p->next;  //跳过节点 
+        }
+        if(p->num == stuID)
+        {
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<setw(6)<<"英语"<<setw(6)<<"物理"<<setw(6)<<"总分"<<'\n';	
+            cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<setw(6)<<p->scoreEnglish<<setw(6)<<p->scorePhysics<<setw(6)<<p->scoreAll<<'\n';
+		}
+        else
+		{
+		    cout<<"没有找到要查询的学号"<<endl;
+		} 
+    }
+    system("pause"); 
+}
+//数学冒泡排序链表内数据 
+void bubbleSort_scoreMath(Node *head)
+{
+	system("cls"); 
+	//冒泡排序核心 
+    Node *p1,*p2,*p3,*p = head; 
+    int i;
+    if(head == 0)//空链表 
+    {
+    	cout<<"系统内没有数据，请使用功能1依次录入：";	
+	}
+	else
+	{
+		for(i = 1;p->next !=0;i++)//cout node scoreMathber
+        {
+        p = p->next;
+        }
+        if(i == 1)//只有1个数据
+        {
+        	p = head; 
+	        cout<<"数学成绩排序为：\n";  //print 
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<'\n';	
+        	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<'\n';
+		}
+		else if(i == 2)//只有2个数据
+		{
+			p = p1 = head ,p2 = p1->next;
+     		if(p1->scoreMath > p2->scoreMath)
+    		{
+     			head = p2;
+     			p2->next = p1;
+     			p1->next = 0;
+            } 
+            cout<<"数学成绩排序为：\n";  //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}
+		else if( i== 3)//只有3个数据
+		{
+			p = p1 = head,p2 = head->next,p3 = p2->next;//3个if实现简单冒泡排序 
+     		if(p1->scoreMath > p2->scoreMath)
+    		{
+	    		head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;
+    		}
+   	    	if(p2->scoreMath > p3->scoreMath)
+	    	{
+	    		p1->next = p3;
+	    		p3->next = p2;
+	    		p2->next =0;
+	    		//结点交换后，p2与p3位置颠倒回来
+                Node *pTemp;
+                pTemp = p2;
+                p2 = p3;
+                p3 = pTemp;
+                p = head;
+	      	}
+	    	if(p1->scoreMath > p2->scoreMath)
+	    	{
+	    	    head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;   
+    		} 
+    		cout<<"数学成绩排序为：\n";  //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"数学"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<'\n';
+                p = p->next;
+            }
+            p = head;
+ 		}
+ 		else//3个数据以上 
+ 		{
+ 			bool flag = 1,pFlag = 0,sortFlag = 0;
+            int temp,n;
+    	    p = p1 = head ,p2 = p1->next,p3=head; 
+    	    for(i = 0,p = head;p->next !=0;i++)//cout node scoreMathber
+            {
+            	p = p->next;
+          	}
+            for(;i > 0;i--)
+            {
+            	p1 = head ;
+        		p2 = p1->next;
+        		p3=head;
+    	    	flag = 1;
+    	    	sortFlag = 0;//optimize
+            	do
+             	{
+            		if(p2->next == 0)
+    	    		{
+    	    			flag = 0;
+    	    		}
+        	    	if(p1 == head)//method begining
+                	{
+                		if(p1->scoreMath > p2->scoreMath)
+         	        	{
+        	        		Node *pTemp = p2; //copy
+    		        		p1->next = p2->next;
+	        	    		head = p2;
+		            	    p2 = pTemp;
+	        	        	p2->next = p1;
+	            		    //结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                        	p1 = p2;
+                        	p2 = pTemp2;
+                        	p = head;
+		            	}
+		            	p1 = p1->next;
+		        	    p2 = p2->next;
+		    	        if(p2->next == 0)//method ending
+	                	{
+		             	if(p1->next->scoreMath > p2->next->scoreMath)
+		                	{
+		                		Node *pTemp = p3;//copy
+		            	    	p3->next = p2;
+		            	    	p2->next = p1;
+	    	            		p1->next = 0;
+		    	            	//结点交换后，p1与p2位置颠倒回来
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                                p1 = p2;
+                                p2 = pTemp2;
+                                p3 = pTemp;  
+                            }   
+		            	}
+		            	else//method middle
+	                 	{
+	    	            	if(p1->scoreMath > p2->scoreMath)
+	    	            	{
+	    	            		Node *pTemp = p3;//copy
+	    	            		p3->next = p2;
+	    	                 	p1->next = p2->next ;
+	    	            		p2->next = p1;
+	    	            		//结点交换后，p1与p2位置颠倒回来,p3恢复
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                            	p1 = p2;
+                             	p2 = pTemp2;
+			            		p3 = pTemp;    			
+		        	    	}
+	                	}
+	                //p = head;
+	                p3 = head;
+	                }
+	            	else if(p2->next == 0)//method ending
+	            	{
+		            	if(p1->scoreMath > p2->scoreMath)
+		             	{
+		            		Node *pTemp = p3;//copy
+		            		p3->next = p2;
+		            		p2->next = p1;
+	            			p1->next = 0;
+		            		//结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+                            p3 = pTemp;    				
+		             	}
+	            	}
+	             	else//method middle
+	             	{
+	            		if(p1->scoreMath > p2->scoreMath)
+	            		{
+	            			Node *pTemp = p3;//copy
+	            	    	p3->next = p2;
+	            	    	p1->next = p2->next ;
+	            	    	p2->next = p1;
+	            			//结点交换后，p1与p2位置颠倒回来,p3恢复
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+	    	    	    	p3 = pTemp;     			
+	    	    		}
+	            	}
+	    	    	p1 = p1->next;
+	          		p2 = p2->next;	
+	     	    	p3 = p3->next;	
+	         	}while(flag);
+    	    	if(sortFlag) break;	
+            }
+            p = head;
+        	cout<<"数学排序之后为：\n";
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"成绩"<<'\n';	
+        	while(p != NULL)
+        	{
+         	    cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreMath<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}		
+	}
+    system("pause");
+}
+//英语冒泡排序链表内数据 
+void bubbleSort_scoreEnglish(Node *head)
+{
+	system("cls");
+	//冒泡排序核心 
+    Node *p1,*p2,*p3,*p = head; 
+    int i;
+    if(head == 0)//空链表 
+    {
+    	cout<<"系统内没有数据，请使用功能1依次录入：";	
+	}
+	else
+	{
+		for(i = 1;p->next !=0;i++)//cout node number
+        {
+        p = p->next;
+        }
+        if(i == 1)//只有1个数据
+        {
+        	p = head; //直接输出 
+	        cout<<"英语成绩排序为：\n";  //print 
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"英语"<<'\n';	
+        	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreEnglish<<'\n';
+		}
+		else if(i == 2)//只有2个数据
+		{
+			p = p1 = head ,p2 = p1->next;//单次比较后输出 
+     		if(p1->scoreEnglish > p2->scoreEnglish)
+    		{
+     			head = p2;
+     			p2->next = p1;
+     			p1->next = 0;
+            } 
+            cout<<"英语成绩排序为：\n";  //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"英语"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreEnglish<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}
+		else if( i== 3)//只有3个数据
+		{
+			p = p1 = head,p2 = head->next,p3 = p2->next;//3个if实现简单冒泡排序 
+     		if(p1->scoreEnglish > p2->scoreEnglish)
+    		{
+	    		head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;
+    		}
+   	    	if(p2->scoreEnglish > p3->scoreEnglish)
+	    	{
+	    		p1->next = p3;
+	    		p3->next = p2;
+	    		p2->next =0;
+	    		//结点交换后，p2与p3位置颠倒回来
+                Node *pTemp;
+                pTemp = p2;
+                p2 = p3;
+                p3 = pTemp;
+                p = head;
+	      	}
+	    	if(p1->scoreEnglish > p2->scoreEnglish)
+	    	{
+	    	    head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;   
+    		} 
+    		cout<<"根据学号排序阅览为：\n"; //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"英语"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreEnglish<<'\n';
+                p = p->next;
+            }
+            p = head;
+ 		}
+ 		else//3个数据以上 
+ 		{
+ 			bool flag = 1,pFlag = 0,sortFlag = 0;
+            int temp,n;
+    	    p = p1 = head ,p2 = p1->next,p3=head; 
+    	    for(i = 0,p = head;p->next !=0;i++)//cout node number
+            {
+            	p = p->next;
+          	}
+            for(;i > 0;i--)
+            {
+            	p1 = head ;
+        		p2 = p1->next;
+        		p3=head;
+    	    	flag = 1;
+    	    	sortFlag = 0;//optimize
+            	do
+             	{
+            		if(p2->next == 0)
+    	    		{
+    	    			flag = 0;
+    	    		}
+        	    	if(p1 == head)//method begining
+                	{
+                		if(p1->scoreEnglish > p2->scoreEnglish)
+         	        	{
+        	        		Node *pTemp = p2; //copy
+    		        		p1->next = p2->next;
+	        	    		head = p2;
+		            	    p2 = pTemp;
+	        	        	p2->next = p1;
+	            		    //结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                        	p1 = p2;
+                        	p2 = pTemp2;
+                        	p = head;
+		            	}
+		            	p1 = p1->next;
+		        	    p2 = p2->next;
+		    	        if(p2->next == 0)//method ending
+	                	{
+		             	if(p1->next->scoreEnglish > p2->next->scoreEnglish)
+		                	{
+		                		Node *pTemp = p3;//copy
+		            	    	p3->next = p2;
+		            	    	p2->next = p1;
+	    	            		p1->next = 0;
+		    	            	//结点交换后，p1与p2位置颠倒回来
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                                p1 = p2;
+                                p2 = pTemp2;
+                                p3 = pTemp;  
+                            }   
+		            	}
+		            	else//method middle
+	                 	{
+	    	            	if(p1->scoreEnglish > p2->scoreEnglish)
+	    	            	{
+	    	            		Node *pTemp = p3;//copy
+	    	            		p3->next = p2;
+	    	                 	p1->next = p2->next ;
+	    	            		p2->next = p1;
+	    	            		//结点交换后，p1与p2位置颠倒回来,p3恢复
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                            	p1 = p2;
+                             	p2 = pTemp2;
+			            		p3 = pTemp;    			
+		        	    	}
+	                	}
+	                //p = head;
+	                p3 = head;
+	                }
+	            	else if(p2->next == 0)//method ending
+	            	{
+		            	if(p1->scoreEnglish > p2->scoreEnglish)
+		             	{
+		            		Node *pTemp = p3;//copy
+		            		p3->next = p2;
+		            		p2->next = p1;
+	            			p1->next = 0;
+		            		//结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+                            p3 = pTemp;    				
+		             	}
+	            	}
+	             	else//method middle
+	             	{
+	            		if(p1->scoreEnglish > p2->scoreEnglish)
+	            		{
+	            			Node *pTemp = p3;//copy
+	            	    	p3->next = p2;
+	            	    	p1->next = p2->next ;
+	            	    	p2->next = p1;
+	            			//结点交换后，p1与p2位置颠倒回来,p3恢复
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+	    	    	    	p3 = pTemp;     			
+	    	    		}
+	            	}
+	    	    	p1 = p1->next;
+	          		p2 = p2->next;	
+	     	    	p3 = p3->next;	
+	         	}while(flag);
+    	    	if(sortFlag) break;	
+            }
+            p = head;
+        	cout<<"英语成绩排序为：\n";  //print 
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"英语"<<'\n';	
+        	while(p != NULL)
+        	{
+        	    cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreEnglish<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}
+		
+	}
+    system("pause");
+}
+//物理冒泡排序链表内数据 
+void bubbleSort_scorePhysics(Node *head)
+{
+	system("cls"); 
+	//冒泡排序核心 
+    Node *p1,*p2,*p3,*p = head; 
+    int i;
+    if(head == 0)//空链表 
+    {
+    	cout<<"系统内没有数据，请使用功能1依次录入：";	
+	}
+	else
+	{
+		for(i = 1;p->next !=0;i++)//cout node num
+        {
+        p = p->next;
+        }
+        if(i == 1)//只有1个数据
+        {
+        	p = head; 
+	        cout<<"物理成绩排序为：\n";  //print 
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"物理"<<'\n';	
+        	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scorePhysics<<'\n';
+		}
+		else if(i == 2)//只有2个数据
+		{
+			p = p1 = head ,p2 = p1->next;
+     		if(p1->scorePhysics > p2->scorePhysics)
+    		{
+     			head = p2;
+     			p2->next = p1;
+     			p1->next = 0;
+            } 
+            cout<<"物理成绩排序为：\n";  //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"物理"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scorePhysics<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}
+		else if( i== 3)//只有3个数据
+		{
+			p = p1 = head,p2 = head->next,p3 = p2->next;//3个if实现简单冒泡排序 
+     		if(p1->scorePhysics > p2->scorePhysics)
+    		{
+	    		head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;
+    		}
+   	    	if(p2->scorePhysics > p3->scorePhysics)
+	    	{
+	    		p1->next = p3;
+	    		p3->next = p2;
+	    		p2->next =0;
+	    		//结点交换后，p2与p3位置颠倒回来
+                Node *pTemp;
+                pTemp = p2;
+                p2 = p3;
+                p3 = pTemp;
+                p = head;
+	      	}
+	    	if(p1->scorePhysics > p2->scorePhysics)
+	    	{
+	    	    head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;   
+    		} 
+    		cout<<"物理成绩排序为：\n";  //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"物理"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scorePhysics<<'\n';
+                p = p->next;
+            }
+            p = head;
+ 		}
+ 		else//3个数据以上 
+ 		{
+ 			bool flag = 1,pFlag = 0,sortFlag = 0;
+            int temp,n;
+    	    p = p1 = head ,p2 = p1->next,p3=head; 
+    	    for(i = 0,p = head;p->next !=0;i++)//cout node num
+            {
+            	p = p->next;
+          	}
+            for(;i > 0;i--)
+            {
+            	p1 = head ;
+        		p2 = p1->next;
+        		p3=head;
+    	    	flag = 1;
+    	    	sortFlag = 0;//optimize
+            	do
+             	{
+            		if(p2->next == 0)
+    	    		{
+    	    			flag = 0;
+    	    		}
+        	    	if(p1 == head)//method begining
+                	{
+                		if(p1->scorePhysics > p2->scorePhysics)
+         	        	{
+        	        		Node *pTemp = p2; //copy
+    		        		p1->next = p2->next;
+	        	    		head = p2;
+		            	    p2 = pTemp;
+	        	        	p2->next = p1;
+	            		    //结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                        	p1 = p2;
+                        	p2 = pTemp2;
+                        	p = head;
+		            	}
+		            	p1 = p1->next;
+		        	    p2 = p2->next;
+		    	        if(p2->next == 0)//method ending
+	                	{
+		             	if(p1->next->scorePhysics > p2->next->scorePhysics)
+		                	{
+		                		Node *pTemp = p3;//copy
+		            	    	p3->next = p2;
+		            	    	p2->next = p1;
+	    	            		p1->next = 0;
+		    	            	//结点交换后，p1与p2位置颠倒回来
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                                p1 = p2;
+                                p2 = pTemp2;
+                                p3 = pTemp;  
+                            }   
+		            	}
+		            	else//method middle
+	                 	{
+	    	            	if(p1->scorePhysics > p2->scorePhysics)
+	    	            	{
+	    	            		Node *pTemp = p3;//copy
+	    	            		p3->next = p2;
+	    	                 	p1->next = p2->next ;
+	    	            		p2->next = p1;
+	    	            		//结点交换后，p1与p2位置颠倒回来,p3恢复
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                            	p1 = p2;
+                             	p2 = pTemp2;
+			            		p3 = pTemp;    			
+		        	    	}
+	                	}
+	                //p = head;
+	                p3 = head;
+	                }
+	            	else if(p2->next == 0)//method ending
+	            	{
+		            	if(p1->scorePhysics > p2->scorePhysics)
+		             	{
+		            		Node *pTemp = p3;//copy
+		            		p3->next = p2;
+		            		p2->next = p1;
+	            			p1->next = 0;
+		            		//结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+                            p3 = pTemp;    				
+		             	}
+	            	}
+	             	else//method middle
+	             	{
+	            		if(p1->scorePhysics > p2->scorePhysics)
+	            		{
+	            			Node *pTemp = p3;//copy
+	            	    	p3->next = p2;
+	            	    	p1->next = p2->next ;
+	            	    	p2->next = p1;
+	            			//结点交换后，p1与p2位置颠倒回来,p3恢复
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+	    	    	    	p3 = pTemp;     			
+	    	    		}
+	            	}
+	    	    	p1 = p1->next;
+	          		p2 = p2->next;	
+	     	    	p3 = p3->next;	
+	         	}while(flag);
+    	    	if(sortFlag) break;	
+            }
+            p = head;
+        	cout<<"物理排序之后为：\n";
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"成绩"<<'\n';	
+        	while(p != NULL)
+        	{
+         	    cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scorePhysics<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}		
+	}
+    system("pause");
+}
+//总分冒泡排序链表内数据 
+void bubbleSort_scoreAll(Node *head)
+{	
+    system("cls"); 
+	//冒泡排序核心 
+    Node *p1,*p2,*p3,*p = head; 
+    int i;
+    if(head == 0)//空链表 
+    {
+    	cout<<"系统内没有数据，请使用功能1依次录入：";	
+	}
+	else
+	{
+		for(i = 1;p->next !=0;i++)//cout node num
+        {
+        p = p->next;
+        }
+        if(i == 1)//只有1个数据
+        {
+        	p = head; 
+	        cout<<"总分成绩排序为：\n";  //print 
+        	cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"总分"<<'\n';	
+        	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreAll<<'\n';
+		}
+		else if(i == 2)//只有2个数据
+		{
+			p = p1 = head ,p2 = p1->next;
+     		if(p1->scoreAll > p2->scoreAll)
+    		{
+     			head = p2;
+     			p2->next = p1;
+     			p1->next = 0;
+            } 
+            cout<<"总分成绩排序为：\n";  //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"总分"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreAll<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}
+		else if( i== 3)//只有3个数据
+		{
+			p = p1 = head,p2 = head->next,p3 = p2->next;//3个if实现简单冒泡排序 
+     		if(p1->scoreAll > p2->scoreAll)
+    		{
+	    		head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;
+    		}
+   	    	if(p2->scoreAll > p3->scoreAll)
+	    	{
+	    		p1->next = p3;
+	    		p3->next = p2;
+	    		p2->next =0;
+	    		//结点交换后，p2与p3位置颠倒回来
+                Node *pTemp;
+                pTemp = p2;
+                p2 = p3;
+                p3 = pTemp;
+                p = head;
+	      	}
+	    	if(p1->scoreAll > p2->scoreAll)
+	    	{
+	    	    head = p2;
+	    		p2->next = p1;
+	    		p1->next = p3;
+	    		//结点交换后，p1与p2位置颠倒回来
+                Node *pTemp;
+                pTemp = p1;
+                p1 = p2;
+                p2 = pTemp;
+                p = head;   
+    		} 
+    		cout<<"总分成绩排序为：\n";  //print 
+            cout<<left<<setw(8)<<"姓名"<<setw(6)<<"学号"<<setw(6)<<"总分"<<'\n';	
+            while(p != NULL)
+            {
+            	cout<<left<<setw(8)<<p->name<<setw(6)<<p->num<<setw(6)<<p->scoreAll<<'\n';
+                p = p->next;
+            }
+            p = head;
+ 		}
+ 		else//3个数据以上 
+ 		{
+ 			bool flag = 1,pFlag = 0,sortFlag = 0;
+            int temp,n;
+    	    p = p1 = head ,p2 = p1->next,p3=head; 
+    	    for(i = 0,p = head;p->next !=0;i++)//cout node num
+            {
+            	p = p->next;
+          	}
+            for(;i > 0;i--)
+            {
+            	p1 = head ;
+        		p2 = p1->next;
+        		p3=head;
+    	    	flag = 1;
+    	    	sortFlag = 0;//optimize
+            	do
+             	{
+            		if(p2->next == 0)
+    	    		{
+    	    			flag = 0;
+    	    		}
+        	    	if(p1 == head)//method begining
+                	{
+                		if(p1->scoreAll > p2->scoreAll)
+         	        	{
+        	        		Node *pTemp = p2; //copy
+    		        		p1->next = p2->next;
+	        	    		head = p2;
+		            	    p2 = pTemp;
+	        	        	p2->next = p1;
+	            		    //结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                        	p1 = p2;
+                        	p2 = pTemp2;
+                        	p = head;
+		            	}
+		            	p1 = p1->next;
+		        	    p2 = p2->next;
+		    	        if(p2->next == 0)//method ending
+	                	{
+		             	if(p1->next->scoreAll > p2->next->scoreAll)
+		                	{
+		                		Node *pTemp = p3;//copy
+		            	    	p3->next = p2;
+		            	    	p2->next = p1;
+	    	            		p1->next = 0;
+		    	            	//结点交换后，p1与p2位置颠倒回来
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                                p1 = p2;
+                                p2 = pTemp2;
+                                p3 = pTemp;  
+                            }   
+		            	}
+		            	else//method middle
+	                 	{
+	    	            	if(p1->scoreAll > p2->scoreAll)
+	    	            	{
+	    	            		Node *pTemp = p3;//copy
+	    	            		p3->next = p2;
+	    	                 	p1->next = p2->next ;
+	    	            		p2->next = p1;
+	    	            		//结点交换后，p1与p2位置颠倒回来,p3恢复
+                                Node *pTemp2;
+                                pTemp2 = p1;
+                            	p1 = p2;
+                             	p2 = pTemp2;
+			            		p3 = pTemp;    			
+		        	    	}
+	                	}
+	                //p = head;
+	                p3 = head;
+	                }
+	            	else if(p2->next == 0)//method ending
+	            	{
+		            	if(p1->scoreAll > p2->scoreAll)
+		             	{
+		            		Node *pTemp = p3;//copy
+		            		p3->next = p2;
+		            		p2->next = p1;
+	            			p1->next = 0;
+		            		//结点交换后，p1与p2位置颠倒回来
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+                            p3 = pTemp;    				
+		             	}
+	            	}
+	             	else//method middle
+	             	{
+	            		if(p1->scoreAll > p2->scoreAll)
+	            		{
+	            			Node *pTemp = p3;//copy
+	            	    	p3->next = p2;
+	            	    	p1->next = p2->next ;
+	            	    	p2->next = p1;
+	            			//结点交换后，p1与p2位置颠倒回来,p3恢复
+                            Node *pTemp2;
+                            pTemp2 = p1;
+                            p1 = p2;
+                            p2 = pTemp2;
+	    	    	    	p3 = pTemp;     			
+	    	    		}
+	            	}
+	    	    	p1 = p1->next;
+	          		p2 = p2->next;	
+	     	    	p3 = p3->next;	
+	         	}while(flag);
+    	    	if(sortFlag) break;	
+            }
+            p = head;
+        	cout<<"总分排序之后为：\n";
+        	cout<<left<<setw(8)<<"学号"<<setw(6)<<"成绩"<<'\n';	
+        	while(p != NULL)
+        	{
+         	    cout<<left<<setw(8)<<p->num<<setw(6)<<p->scoreAll<<'\n';
+                p = p->next;
+            }
+            p = head;
+		}		
+	}
+    system("pause");
+}
+//UI界面设计
+void Menu()
+{ 
+    system("Cls");  //清空界面完成刷新操作; 
+	cout<<"                --------------------------\n";
+	cout<<"               |     学生成绩管理系统     |\n";
+	cout<<"               |      1.录入学生信息      |\n";
+	cout<<"               |      2.插入学生成绩      |\n";
+	cout<<"               |      3.删除学生成绩      |\n";
+    cout<<"               |      4.更改指定成绩      |\n";
+    cout<<"               |      5.查询指定成绩      |\n";
+    cout<<"               |      6.排序全班数学      |\n";
+    cout<<"               |      7.排序全班英语      |\n";
+    cout<<"               |      8.排序全班物理      |\n";
+    cout<<"               |      9.排序全班总分      |\n";
+    cout<<"               |      0.退出MIS系统       |\n";
+	cout<<"                --------------------------\n";
+}
+ // 菜单命令执行 ;
+void Menu_Order() 
+{ 
+	if(order == 1) {
+		head = create(head,warmFlag);
+	}
+	else if(order == 2){
+		head = insert(head);
+	}
+	else if(order == 3){		
+		head = delete_node(head);
+	}
+	else if(order == 4){
+		replace(head); 
+	}
+	else if(order == 5){
+		search(head);
+	}
+	else if(order == 6){
+		bubbleSort_scoreMath(head);
+	}
+	else if(order == 7){
+		bubbleSort_scoreEnglish(head);	    
+	}
+	else if(order == 8){
+	    bubbleSort_scorePhysics(head);
+	}
+	else if(order == 9){
+	    bubbleSort_scoreAll(head);
+	}
+	else if(order == 0){
+		exit(0);
+		system("pause");
+	}
+}
+//main function
+int main()
+{
+	while(1)
+	{
+	 	Menu();
+		cout<<"请在链表下方输入操作指令!\n\n"; 
+		print(head);
+		cin>>order;
+		while((order < 0)||(order > 9))
+		{	
+			Menu();	
+			cout<<"指令有误，请重新输入！"<<endl; 
+			cout<<"请重新输入操作指令：\n'"; 
+			cin>>order;
+			print(head);
+		}
+		Menu_Order();
+	}
+	return 0;
+}  
+
