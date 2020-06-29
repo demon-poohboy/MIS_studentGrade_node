@@ -1,7 +1,7 @@
 #include <iostream>
 #include<string>
 #include<iomanip>
-//#define NULL 0
+#define NULL 0
 using namespace std;
 void Menu();
 //struction defination
@@ -30,7 +30,7 @@ Node *create(Node *head,bool warmFlag)
 	{
 		cout<<"该操作将会覆盖原有数据! 若要修改单个节点建议您使用2 3 4功能。\n";
 		cout<<"是否执行重新输入Y/N？： ";
-		char judge;
+		char judge;//confirm operation
 		cin>>judge;
 		if(judge == 'Y' || judge == 'y')
 		{
@@ -1474,8 +1474,24 @@ void Menu_Order()
 	    bubbleSort_scoreAll(head);
 	}
 	else if(order == 0){
-		exit(0);
-		system("pause");
+		{ 
+		    system("cls");
+		    char judge;//confirm order
+		    cout<<"确认要退出吗? Y/N: ";
+			cin>>judge;
+			if(judge == 'Y' || judge == 'y')
+			{
+	        	cout<<"退出成功！欢迎您下次使用。\n" ;
+	        	exit(0);
+	        	system("pause");	
+			}
+	    	else 
+			{
+				cout<<"取消退出！系统将返回主界面。\n" ;
+	        	system("pause");
+			    Menu();	
+			}
+		} 
 	}
 }
 //main function
